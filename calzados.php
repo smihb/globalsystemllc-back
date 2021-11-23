@@ -6,33 +6,46 @@ header('Access-Control-Allow-Origin: *');
 header('Access-Control-Allow-Methods: *');
 
 switch ($_SERVER['REQUEST_METHOD']) {
+
     case 'GET':
+
         echo json_encode(Calzados::leerTodosLosCalzados());
+
         break;
 
     case 'POST':
+
         $datos = json_decode(file_get_contents('php://input'));
+
         if ($datos->codigo && $datos->nombre && $datos->color && $datos->precio) {
+
             echo json_encode(Calzados::crearCalzado($datos->codigo, $datos->nombre, $datos->color, $datos->precio));
             
         } else {
+
             echo 'datos incompletos';
         }
 
         break;
 
     case 'PUT':
+
         $datos = json_decode(file_get_contents('php://input'));
+
         if ($datos->id && $datos->codigo && $datos->nombre && $datos->color && $datos->precio) {
+
             echo json_encode(Calzados::editarCalzado($datos->id, $datos->codigo, $datos->nombre, $datos->color, $datos->precio));
             
         } else {
+
             echo 'datos incompletos';
         }
         break;
         
     case 'DELETE':
+
         if (isset($_GET['id'])) {
+
             echo json_encode(Calzados::borrarCalzado($_GET['id']));
         }else{
             echo 'datos incompletos';
@@ -47,11 +60,17 @@ switch ($_SERVER['REQUEST_METHOD']) {
 class Calzados{
 
     public static function leerTodosLosCalzados() {
+
         $db = new Conexion();
+
         $query = "SELECT * FROM calzados AS c INNER JOIN tallas AS t ON c.id = t.id_calzado ORDER BY c.id DESC";
+        
         $resultado = $db->query($query);
+        
         $datos = [];
+        
         if($resultado->num_rows) {
+        
             while($row = $resultado->fetch_assoc()) {
                 $datos[] = [
                     'id' => $row['id_calzado'],
@@ -71,29 +90,44 @@ class Calzados{
         return $datos;
     }
     public static function crearCalzado($codigo ,$nombre, $color, $precio) {
+        
         $db = new Conexion();
+        
         $query = "INSERT INTO calzados(codigo, nombre, color, precio) VALUES('$codigo', '$nombre', '$color', '$precio')";
+        
         $db->query($query);
+        
         if($db->affected_rows == 1) {
+            
             $query = "INSERT INTO tallas(id_calzado) VALUES($db->insert_id)";
+            
             $db->query($query);
+            
             return 'calzado creado';
         }
         return 'codigo existente';
     }
     public static function editarCalzado($id, $codigo ,$nombre, $color, $precio) {
+        
         $db = new Conexion();
+        
         $query = "UPDATE calzados set codigo = '$codigo' , nombre = '$nombre', color = '$color', precio = '$precio' WHERE id = $id";
+        
         $db->query($query);
+        
         if($db->affected_rows == 1) {
             return 'calzado editado';
         }
         return 'calzado no editado';
     }
     public static function borrarCalzado($id) {
+        
         $db = new Conexion();
+        
         $query = "DELETE FROM tallas WHERE id_calzado='$id'";
+        
         $db->query($query);
+        
         if($db->affected_rows == 1) {
             $query = "DELETE FROM calzados WHERE id='$id'";
             $db->query($query);
