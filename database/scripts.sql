@@ -11,20 +11,20 @@ VALUES ('administrador'),
 CREATE TABLE IF NOT EXISTS usuarios(
     id INT AUTO_INCREMENT PRIMARY KEY,
     nombre VARCHAR(50) NOT NULL,
-    roll VARCHAR(50) NOT NULL,
+    id_roll INT NOT NULL,
     correo VARCHAR(50) NOT NULL UNIQUE,
     password VARCHAR(60) NOT NULL DEFAULT '123456',
-    FOREIGN KEY (roll) REFERENCES roles (roll)
+    FOREIGN KEY (id_roll) REFERENCES roles (id)
 );
-INSERT INTO usuarios(nombre, roll, correo) 
-VALUES('Administrador', 'administrador', 'administrador@gmail.com');
+INSERT INTO usuarios(nombre, id_roll, correo) 
+VALUES('Administrador', 1, 'administrador@gmail.com');
 
 CREATE TABLE IF NOT EXISTS calzados(
     id INT AUTO_INCREMENT PRIMARY KEY,
     codigo VARCHAR(50) NOT NULL UNIQUE,
     nombre VARCHAR(50) NOT NULL,
     color VARCHAR(50),
-    precio DECIMAL
+    precio DECIMAL(10,2) NOT NULL DEFAULT 0.00
 );
 
 CREATE TABLE IF NOT EXISTS tallas(
@@ -91,10 +91,10 @@ CREATE TABLE IF NOT EXISTS ventas(
     cantidad INT NOT NULL,
     precio DECIMAL(10,2) NOT NULL,
     importe DECIMAL(10,2) NOT NULL,
-    cliente VARCHAR(50),
-    rif_ci VARCHAR(50),
-    direccion VARCHAR(255),
-    telefono VARCHAR(50),
+    cliente VARCHAR(50) DEFAULT 'Consumidor Final',
+    rif_ci VARCHAR(50) DEFAULT '00000000-0',
+    direccion VARCHAR(255) DEFAULT 'Venezuela',
+    telefono VARCHAR(50) DEFAULT '-',
     fecha TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
     FOREIGN KEY (id_vendedor) REFERENCES usuarios (id),
     FOREIGN KEY (id_calzado) REFERENCES calzados (id)

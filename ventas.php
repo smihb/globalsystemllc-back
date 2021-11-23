@@ -23,7 +23,7 @@ switch ($_SERVER['REQUEST_METHOD']) {
 
         $datos = json_decode(file_get_contents('php://input'));
 
-        if ($datos->id_vendedor && $datos->id_calzado && $datos->talla && $datos->cantidad && $datos->precio && $datos->importe && $datos->cliente && $datos->rif_ci && $datos->direccion && $datos->telefono) {
+        if ($datos->id_vendedor && $datos->id_calzado && $datos->talla && $datos->cantidad && $datos->precio && $datos->importe) {
         
             echo Ventas::crearVenta($datos->id_vendedor, $datos->id_calzado, $datos->talla, $datos->cantidad, $datos->precio, $datos->importe, $datos->cliente, $datos->rif_ci, $datos->direccion, $datos->telefono);
         

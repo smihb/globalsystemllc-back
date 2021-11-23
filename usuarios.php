@@ -54,7 +54,7 @@ switch ($_SERVER['REQUEST_METHOD']) {
             echo json_encode(Usuarios::borrarUsuario($_GET['id']));
 
         }else{
-            
+
             echo json_encode('datos incompletos');
         }
         break;
@@ -70,7 +70,7 @@ class Usuarios {
 
         $db = new Conexion();
 
-        $query = "SELECT *FROM usuarios ORDER BY id DESC";
+        $query = "SELECT u.*, r.roll AS roll FROM usuarios AS u INNER JOIN roles AS r ON r.id = u.id_roll ORDER BY id DESC";
 
         $resultado = $db->query($query);
 
@@ -121,7 +121,7 @@ class Usuarios {
 
         $db = new Conexion();
 
-        $query = "INSERT INTO usuarios(nombre, roll, correo) VALUES('$nombre', '$roll', '$correo')";
+        $query = "INSERT INTO usuarios(nombre, id_roll, correo) VALUES('$nombre', '$roll', '$correo')";
 
         $db->query($query);
 
