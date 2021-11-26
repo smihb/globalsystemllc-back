@@ -83,19 +83,32 @@ CREATE TABLE IF NOT EXISTS tallas(
     FOREIGN KEY (id_calzado) REFERENCES calzados (id)
 );
 
-CREATE TABLE IF NOT EXISTS ventas(
+CREATE TABLE IF NOT EXISTS facturas(
     id INT AUTO_INCREMENT PRIMARY KEY,
     id_vendedor INT NOT NULL,
+    nombre VARCHAR(50) DEFAULT 'Consumidor Final',
+    rif_ci VARCHAR(50) DEFAULT '00000000-0',
+    direccion VARCHAR(255) DEFAULT 'Venezuela',
+    telefono VARCHAR(50) DEFAULT '-',
+    total DECIMAL(10,2) DEFAULT 0.00,
+    fecha TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+    FOREIGN KEY (id_vendedor) REFERENCES usuarios (id)
+);
+CREATE TABLE IF NOT EXISTS descripcion(
+    id_factura INT NOT NULL,
     id_calzado INT NOT NULL,
     talla INT NOT NULL,
+    precio DECIMAL(10,2) NOT NULL DEFAULT 0.00,
     cantidad INT NOT NULL,
-    precio DECIMAL(10,2) NOT NULL,
-    importe DECIMAL(10,2) NOT NULL,
-    cliente VARCHAR(50) NOT NULL DEFAULT 'Consumidor Final',
-    rif_ci VARCHAR(50) NOT NULL DEFAULT '00000000-0',
-    direccion VARCHAR(255) NOT NULL DEFAULT 'Venezuela',
-    telefono VARCHAR(50) NOT NULL DEFAULT '-',
-    fecha TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
-    FOREIGN KEY (id_vendedor) REFERENCES usuarios (id),
+    importe DECIMAL(10,2) NOT NULL DEFAULT 0.00,
+    FOREIGN KEY (id_factura) REFERENCES facturas (id),
     FOREIGN KEY (id_calzado) REFERENCES calzados (id)
+);
+CREATE TABLE IF NOT EXISTS forma_de_pago(
+    id_factura INT NOT NULL,
+    bs_efectivo DECIMAL(10,2)  DEFAULT 0.00,
+    usd_efectivo DECIMAL(10,2)  DEFAULT 0.00,
+    debito DECIMAL(10,2)  DEFAULT 0.00,
+    credito DECIMAL(10,2)  DEFAULT 0.00,
+    FOREIGN KEY (id_factura) REFERENCES facturas (id)
 );
