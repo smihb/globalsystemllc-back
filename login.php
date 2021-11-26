@@ -27,7 +27,7 @@ class Login{
 
         $db = new Conexion();
 
-        $query = "SELECT *FROM usuarios WHERE correo='$correo'";
+        $query = "SELECT u.*, r.roll FROM usuarios AS u INNER JOIN roles AS r ON r.id = u.id_roll WHERE u.correo='$correo'";
 
         $resultado = $db->query($query);
 

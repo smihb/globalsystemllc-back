@@ -37,9 +37,9 @@ switch ($_SERVER['REQUEST_METHOD']) {
 
         $datos = json_decode(file_get_contents('php://input'));
 
-        if ($datos->id && $datos->nombre && $datos->roll && $datos->correo && $datos->password) {
+        if ($datos->id && $datos->nombre && $datos->id_roll && $datos->correo && $datos->password) {
 
-            echo json_encode(Usuarios::editarUsuario($datos->id, $datos->nombre, $datos->roll, $datos->correo, $datos->password));
+            echo json_encode(Usuarios::editarUsuario($datos->id, $datos->nombre, $datos->id_roll, $datos->correo, $datos->password));
 
         } else {
 
@@ -82,6 +82,7 @@ class Usuarios {
                 $datos[] = [
                     'id' => $row['id'],
                     'nombre' => $row['nombre'],
+                    'id_roll' => $row['id_roll'],
                     'roll' => $row['roll'],
                     'correo' => $row['correo'],
                     'password' => $row['password']
@@ -107,6 +108,7 @@ class Usuarios {
                 $datos[] = [
                     'id' => $row['id'],
                     'nombre' => $row['nombre'],
+                    'id_roll' => $row['id_roll'],
                     'roll' => $row['roll'],
                     'correo' => $row['correo'],
                     'password' => $row['password']
@@ -135,7 +137,7 @@ class Usuarios {
 
         $db = new Conexion();
 
-        $query = "UPDATE usuarios SET nombre= '$nombre', roll='$roll', correo='$correo', password='$password' WHERE id='$id'";
+        $query = "UPDATE usuarios SET nombre= '$nombre', id_roll='$roll', correo='$correo', password='$password' WHERE id='$id'";
         
         $db->query($query);
 

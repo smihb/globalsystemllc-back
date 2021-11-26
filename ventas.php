@@ -24,7 +24,10 @@ switch ($_SERVER['REQUEST_METHOD']) {
         $datos = json_decode(file_get_contents('php://input'));
 
         if ($datos->id_vendedor && $datos->id_calzado && $datos->talla && $datos->cantidad && $datos->precio && $datos->importe) {
-        
+            if(!$datos->cliente) $datos->cliente = 'Consumidor Final';
+            if(!$datos->rif_ci) $datos->rif_ci = '00000000-0'; 
+            if(!$datos->direccion) $datos->direccion = 'Venezuela';
+            if(!$datos->telefono) $datos->telefono = '-';
             echo Ventas::crearVenta($datos->id_vendedor, $datos->id_calzado, $datos->talla, $datos->cantidad, $datos->precio, $datos->importe, $datos->cliente, $datos->rif_ci, $datos->direccion, $datos->telefono);
         
         } else {
