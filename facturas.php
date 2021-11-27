@@ -87,7 +87,7 @@ class Facturas {
                     }
                 }
                 
-                $query3 = "SELECT d.*,c.codigo, c.nombre AS calzado FROM descripcion AS d INNER JOIN calzados AS c ON d.id_calzado = c.id WHERE id_factura = '$id'";
+                $query3 = "SELECT d.*,c.codigo, c.nombre AS calzado, c.color FROM descripcion AS d INNER JOIN calzados AS c ON d.id_calzado = c.id WHERE id_factura = '$id'";
                 
                 $resultado3 = $db->query($query3);
                 
@@ -101,6 +101,7 @@ class Facturas {
                             'id_calzado' => $row3['id_calzado'],
                             'codigo' => $row3['codigo'],
                             'calzado' => $row3['calzado'],
+                            'color' => $row3['color'],
                             'talla' => $row3['talla'],
                             'cantidad' => $row3['cantidad'],
                             'precio' => $row3['precio'],
@@ -163,7 +164,7 @@ class Facturas {
                     }
                 }
                 
-                $query3 = "SELECT d.*,c.codigo, c.nombre AS calzado FROM descripcion AS d INNER JOIN calzados AS c ON d.id_calzado = c.id WHERE id_factura = '$id'";
+                $query3 = "SELECT d.*,c.codigo, c.nombre AS calzado, c.color FROM descripcion AS d INNER JOIN calzados AS c ON d.id_calzado = c.id WHERE id_factura = '$id'";
                 
                 $resultado3 = $db->query($query3);
                 
@@ -177,6 +178,7 @@ class Facturas {
                             'id_calzado' => $row3['id_calzado'],
                             'codigo' => $row3['codigo'],
                             'calzado' => $row3['calzado'],
+                            'color' => $row3['color'],
                             'talla' => $row3['talla'],
                             'cantidad' => $row3['cantidad'],
                             'precio' => $row3['precio'],
