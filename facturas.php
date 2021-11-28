@@ -51,33 +51,20 @@ switch ($_SERVER['REQUEST_METHOD']) {
 
 class Facturas {
 
-    public static function leerFacturas() {
-        
-        $db = new Conexion();
-        
+    public static function leerFacturas() {   
+        $db = new Conexion(); 
         $query = "SELECT f.*, u.nombre AS vendedor FROM facturas AS f INNER JOIN usuarios AS u 
                     ON f.id_vendedor = u.id ORDER BY id DESC";
-        
         $resultado = $db->query($query);
-        
         $datos = [];
-        
-        if($resultado->num_rows) {      
-            
+        if($resultado->num_rows) {       
             while($row = $resultado->fetch_assoc()) {
-
                 $id = $row['id'];
-
                 $query2 = "SELECT * FROM forma_de_pago WHERE id_factura = '$id'";
-
                 $resultado2 = $db->query($query2);
-
                 $forma_de_pago = [];
-
                 if ($resultado2->num_rows) {
-
                     while ($row2 = $resultado2->fetch_assoc()) {
-
                         $forma_de_pago[] = [
                             'bs_efectivo' => $row2['bs_efectivo'],
                             'usd_efectivo' => $row2['usd_efectivo'],
@@ -85,18 +72,13 @@ class Facturas {
                             'credito' => $row2['credito']
                         ];
                     }
-                }
-                
-                $query3 = "SELECT d.*,c.codigo, c.nombre AS calzado, c.color FROM descripcion AS d INNER JOIN calzados AS c ON d.id_calzado = c.id WHERE id_factura = '$id'";
-                
-                $resultado3 = $db->query($query3);
-                
+                } 
+                $query3 = "SELECT d.*,c.codigo, c.nombre AS calzado, c.color FROM descripcion AS d 
+                        INNER JOIN calzados AS c ON d.id_calzado = c.id WHERE id_factura = '$id'"; 
+                $resultado3 = $db->query($query3); 
                 $descripcion = [];
-
                 if ($resultado3->num_rows) {
-
                     while ($row3 = $resultado3->fetch_assoc()) {
-
                         $descripcion[] = [
                             'id_calzado' => $row3['id_calzado'],
                             'codigo' => $row3['codigo'],
@@ -109,7 +91,6 @@ class Facturas {
                         ];
                     }
                 }
-
                 $datos[] = [
                     'id' => $row['id'],
                     'id_vendedor' => $row['id_vendedor'],
@@ -208,29 +189,32 @@ class Facturas {
     public static function crearFactura($id_vendedor, $nombre, $rif_ci, $direccion, $telefono, $total,
                                         $bs_efectivo, $usd_efectivo, $debito, $credito,
                                         $descripcion) {
-        
         $db = new Conexion();
 
-        $query = "INSERT INTO facturas(id_vendedor, nombre, rif_ci, direccion, telefono, total) VALUES('$id_vendedor', '$nombre', '$rif_ci', '$direccion', '$telefono', '$total')";
+        $query = "INSERT INTO facturas(id_vendedor, nombre, rif_ci, direccion, telefono, total) 
+                VALUES('$id_vendedor', '$nombre', '$rif_ci', '$direccion', '$telefono', '$total')";
         
         $db->query($query);
 
         if ($db->affected_rows == 1) {
             $id = $db->insert_id;
 
-            $query2 = "INSERT INTO forma_de_pago(id_factura, bs_efectivo, usd_efectivo, debito, credito) VALUES($id, $bs_efectivo, $usd_efectivo, $debito, $credito)";
+            $query2 = "INSERT INTO forma_de_pago(id_factura, bs_efectivo, usd_efectivo, debito, credito) 
+                        VALUES($id, $bs_efectivo, $usd_efectivo, $debito, $credito)";
 
             $db->query($query2); 
 
             foreach ($descripcion as $desc) {
                 $query3 = "INSERT INTO descripcion(id_factura, id_calzado, talla, precio, cantidad, importe) 
-                                VALUES('$id', '$desc->id_calzado', $desc->talla, '$desc->precio', '$desc->cantidad', '$desc->importe')";
+                                VALUES('$id', '$desc->id_calzado', $desc->talla, '$desc->precio', 
+                                        '$desc->cantidad', '$desc->importe')";
 
                 $db->query($query3);
 
                 if($db->affected_rows == 1) {
             
-                    $query4 = "UPDATE tallas SET `n$desc->talla`=`n$desc->talla` - '$desc->cantidad' WHERE id_calzado='$desc->id_calzado'";
+                    $query4 = "UPDATE tallas SET `n$desc->talla`=`n$desc->talla` - '$desc->cantidad' 
+                    WHERE id_calzado='$desc->id_calzado'";
                     
                     $db->query($query4);
                 }
